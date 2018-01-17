@@ -1,5 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import { BrowserRouter, Route } from 'react-router-dom'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import PostIndex from './components/post_index'
+
+ReactDOM.render(
+
+  <BrowserRouter>
+    <div>
+      <Route path="/" component={PostIndex} />
+    </div>
+  </BrowserRouter>
+  
+, document.getElementById('root'));
