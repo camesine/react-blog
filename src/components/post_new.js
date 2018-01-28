@@ -1,20 +1,31 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { reduxForm, Field } from 'redux-form'
+import { bindActionCreators } from 'redux'
+import { Link } from 'react-router-dom'
+import { fetchCreatePost } from '../actions/posts_actions'
 
 class PostNew extends Component {
   
   renderField(field) {
-    return <div>
-      <label>{field.label}</label>
-      <input className="form-control" type="text"
-        {...field.input}
-      />
-      {field.meta.error}
-    </div>
+
+    const { meta: { touched, error } } = field
+    const className = `form-group ${touched && error ? "has-danger" : ""}`
+    
+    return (
+      <div className={className}>
+        <label>{field.label}</label>
+        <input className="form-control" type="text" {...field.input} />
+        <div className="text-help">
+          {touched ? error : ""}
+        </div>
+      </div>
+    )
   }
-  
+   
   onSubmit(values) {
-    console.log(values)
+    fetchCreatePost(values)
+    .then(() => this.props.history.push('/'))
   }
 
   render() {
@@ -39,7 +50,8 @@ class PostNew extends Component {
       />
 
       <input type="submit" value="Submit" className="btn btn-primary mt-4" />
-
+      <Link to="/" className="btn btn-danger" >Cancel</Link>
+    
     </form>
   }
 }
@@ -48,19 +60,23 @@ function validate(values) {
 
   const errors = {}  
 
-  if (!values.title || values.title.length < 3) {
+  if (!values.title) {
     errors.title = "Enter a title"
   }
 
   if (!values.categories) {
-    errors.title = "Enter a category"
+    errors.categories = "Enter a category"
   }
 
   if (!values.content) {
-    errors.title = "Enter a content"
+    errors.content = "Enter a content"
   }
   
   return errors
 }
 
-export default reduxForm({ validate, form: "PostsNewForm" })(PostNew)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchCreatePost }, dispatch)
+}
+
+export default reduxForm({ validate, form: "PostsNewForm" })(connect(null, mapDispatchToProps)(PostNew))
