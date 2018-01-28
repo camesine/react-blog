@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reduxForm, Field } from 'redux-form'
-import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 import { fetchCreatePost } from '../actions/posts_actions'
 
@@ -75,8 +74,4 @@ function validate(values) {
   return errors
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchCreatePost }, dispatch)
-}
-
-export default reduxForm({ validate, form: "PostsNewForm" })(connect(null, mapDispatchToProps)(PostNew))
+export default reduxForm({ validate, form: "PostsNewForm" })(connect(null, { fetchCreatePost })(PostNew))
