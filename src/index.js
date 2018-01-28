@@ -8,6 +8,7 @@ import ReduxPromise from 'redux-promise'
 import reducers from './reducers'
 import PostIndex from './components/post_index'
 import PostNew from './components/post_new'
+import './style/style.css'
 
 ReactDOM.render(
   <Provider store={applyMiddleware(ReduxPromise)(createStore)(reducers)}>
